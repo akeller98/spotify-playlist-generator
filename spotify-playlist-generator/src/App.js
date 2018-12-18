@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import ReactDOM from 'react-dom';
 
-class App extends Component {
+export class App extends Component {
   render() {
     return (
       <div className="App">
@@ -26,4 +26,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+//ReactDOM.render(<App />, document.getElementById('root'));
