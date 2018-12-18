@@ -1,0 +1,24 @@
+{
+  "name": "spotify-folder",
+  "version": "1.0.0",
+  "description": "Generates a spotify playlist based on image analysis.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akeller98/spotify-playlist-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akeller98/spotify-playlist-generator/issues"
+  },
+  "homepage": "https://github.com/akeller98/spotify-playlist-generator#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
