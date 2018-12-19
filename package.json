@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/akeller98/spotify-playlist-generator#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0"
   }
 }
