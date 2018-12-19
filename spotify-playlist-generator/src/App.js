@@ -10,6 +10,9 @@ export class WebcamCapture extends Component{
   };
   capture = () => {
     const imageSrc = this.webcam.getScreenshot();
+    fetch('/process')
+      .then((res) => {return res})
+      .then((data) => {console.log(data)});
   };
   render(){
     const videoConstraints = {
