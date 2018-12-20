@@ -10,9 +10,31 @@ export class WebcamCapture extends Component{
   };
   capture = () => {
     const imageSrc = this.webcam.getScreenshot();
-    fetch('/process')
-      .then((res) => {return res})
-      .then((data) => {console.log(data)});
+    let data = {
+      "image": imageSrc
+    }
+    fetch('/process', {
+      method: "POST",
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(function(response){
+      return response.body;
+    })
+    .then(function(data){
+      fetch('/process')
+        .then(response => {
+          return response;
+        })
+        .then(data =>
+          data.json())
+        .then(data => {
+          console.log(data.processed);
+        })
+    })
   };
   render(){
     const videoConstraints = {
