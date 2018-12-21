@@ -4,20 +4,8 @@ const request            = require('request')
 const fs                 = require('fs');
 const app                = express()
 
-const subscriptionKey = '9962f715455940d28e420cdf896b96ea';
+const subscriptionKey = '642d96f8e0094d4182c29107f275c282';
 const uriBase = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect';
-
-let file = 'file.jpg';
-let img_data = '';
-
-fs.readFile(file, function (err, data) {
-        if (err) {
-            throw err;
-        }
-        else {
-            img_data = data;
-        }
-    });
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -29,10 +17,11 @@ function imgProcess(){
   const params = {
     'returnFaceId': 'true',
     'returnFaceLandmarks': 'false',
-    'returnFaceAttributes': 'emotion'
+    'returnFaceAttributes': 'gender,age,emotion'
   };
   const options = {
     uri: uriBase,
+    qs: params,
     body: image_raw,
     headers: {
       'Content-Type': 'application/octet-stream',
@@ -44,8 +33,8 @@ function imgProcess(){
       console.log('Error: ', error);
       return;
     }
-    let jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
-    console.log(image_raw);
+    let jsonResponse = JSON.stringify(JSON.parse(body), null, ' ');
+    //console.log(image_raw);
     console.log(jsonResponse);
   });
 }
@@ -53,7 +42,7 @@ function imgProcess(){
 app.post('/process',function(req,res){
   //console.log(req.body.image);
   result = req.body.image;
-  image_raw = Buffer.from(req.body.image, 'base64');
+  image_raw = Buffer.from(req.body.image.substring(23),'base64');
   res.send(req.body);
 });
 
