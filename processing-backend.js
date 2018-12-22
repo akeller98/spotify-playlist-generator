@@ -12,12 +12,13 @@ app.use(bodyParser.json());
 
 let result = '';
 let image_raw  = '';
+let max = '';
 
 function imgProcess(){
   const params = {
     'returnFaceId': 'true',
     'returnFaceLandmarks': 'false',
-    'returnFaceAttributes': 'gender,age,emotion'
+    'returnFaceAttributes': 'emotion'
   };
   const options = {
     uri: uriBase,
@@ -33,27 +34,37 @@ function imgProcess(){
       console.log('Error: ', error);
       return;
     }
-    let jsonResponse = JSON.stringify(JSON.parse(body), null, ' ');
+    let jsonResponse = JSON.parse(body);
     //console.log(image_raw);
-    console.log(jsonResponse);
+    result = jsonResponse[0].faceAttributes.emotion;
+    let values = Object.values(result);
+    let max_val = Math.max(...values);
+    let max_index = values.indexOf(max_val);
+    max = Object.keys(result)[max_index];
+    console.log(values);
+    console.log(max_val);
+    console.log(max_index);
+    console.log(max);
+
   });
 }
 
 app.post('/process',function(req,res){
   //console.log(req.body.image);
-  result = req.body.image;
   image_raw = Buffer.from(req.body.image.substring(23),'base64');
   res.send(req.body);
+  imgProcess();
 });
 
 app.get('/process',function(req,res){
-  imgProcess();
+  //imgProcess();
   //console.log(image_raw)
   //console.log(img_data);
   res.send({
-    processed: result
+    //"processed": result,
+    "max": max
   });
-})
+});
 
 let port = process.env.PORT || 5000
 console.log(`Listening on port ${port}.`)

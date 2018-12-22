@@ -5,14 +5,25 @@ import ReactDOM from 'react-dom';
 import  Webcam  from 'react-webcam'
 
 export class WebcamCapture extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      processed_results : 'test'
+    };
+    this.capture = this.capture.bind(this);
+    this.setRef = this.setRef.bind(this);
+    //this.setVal = this.set.bind(this);
+  }
   setRef = webcam => {
     this.webcam = webcam;
   };
-  capture = () => {
+
+  capture () {
     const imageSrc = this.webcam.getScreenshot();
     let data = {
       "image": imageSrc
     }
+    let results = '';
     fetch('/process', {
       method: "POST",
       headers:{
@@ -24,17 +35,17 @@ export class WebcamCapture extends Component{
     .then(function(response){
       return response.body;
     })
-    .then(function(data){
-      fetch('/process')
-        .then(response => {
-          return response;
-        })
-        .then(data =>
-          data.json())
-        .then(data => {
-          console.log(data.processed);
-        })
-    })
+
+    setTimeout(function(){
+    fetch('/process')
+      .then(res => res.json())
+      .then(data => results = JSON.stringify(data))
+    }, 2000);
+
+    setTimeout(
+      () => this.setState({processed_results: results})
+    , 3000);
+    //this.forceUpdate();
   };
   render(){
     const videoConstraints = {
@@ -53,6 +64,7 @@ export class WebcamCapture extends Component{
           videoConstraints={videoConstraints}
         />
         <button onClick={this.capture} style={{position:"relative", left:-380}}>Capture photo</button>
+        <p> {this.state.processed_results} </p>
       </div>
     );
   }
