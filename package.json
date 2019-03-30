@@ -2,7 +2,7 @@
   "name": "spotify-folder",
   "version": "1.0.0",
   "description": "Generates a spotify playlist based on image analysis.",
-  "main": "server.js",
+  "main": "processing-backend.js",
   "scripts": {
     "client": "cd spotify-playlist-generator && yarn start",
     "server": "nodemon processing-backend.js",
