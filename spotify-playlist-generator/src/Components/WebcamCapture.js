@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import  Webcam  from 'react-webcam';
+import { SpotifyPlaylist } from './SpotifyPlaylist.js'
+import queryString from 'query-string';
 
 export class WebcamCapture extends Component{
   constructor(props){
     super(props);
     this.state = {
-      processed_results : 'test'
+      processed_results : '',
+      serverData: ''
     };
     this.capture = this.capture.bind(this);
     this.setRef = this.setRef.bind(this);
@@ -43,6 +46,17 @@ export class WebcamCapture extends Component{
       () => this.setState({processed_results: results})
     , 3000);
     //this.forceUpdate();
+    setTimeout(
+      () => {
+        let parsed = queryString.parse(window.location.search);
+        let accessToken = parsed.access_token;
+        console.log(accessToken);
+
+        fetch('https://api.spotify.com/v1/me', {
+          headers:  {'Authorization': 'Bearer ' + accessToken}
+        }).then(res => res.json())
+        .then(data => this.setState({serverData: JSON.stringify(data.display_name)}));
+      }, 3400);
   };
   render(){
     const videoConstraints = {
@@ -62,6 +76,8 @@ export class WebcamCapture extends Component{
         />
         <button onClick={this.capture} style={{position:"relative", left:-380}}>Capture photo</button>
         <p> {this.state.processed_results} </p>
+
+        <p> {this.state.serverData} </p>
       </div>
     );
   }
